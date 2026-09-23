@@ -17,6 +17,13 @@ handler = logging.FileHandler(
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 
-@bot.commands(name='ping')
+@bot.event
+async def on_ready():
+    print(f'Im ready!')
+
+
+@bot.command(name='ping')
 async def ping(ctx):
     await ctx.send('Pong!')
+
+bot.run(token, log_handler=handler, log_level=logging.DEBUG)
