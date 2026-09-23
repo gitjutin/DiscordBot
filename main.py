@@ -26,4 +26,6 @@ async def on_ready():
 async def ping(ctx):
     await ctx.send('Pong!')
 
+# im testing a pull request to see if it works
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
