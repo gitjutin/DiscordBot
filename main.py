@@ -14,18 +14,20 @@ intents.members = True
 handler = logging.FileHandler(
     filename='discord.log', encoding='utf-8', mode='w')
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+
+class Bot(commands.Bot):
+    async def setup_hook(self):
+        for file in os.listdir('./cogs'):
+            if file.endswith('.py'):
+                await self.load_extension(f'cogs.{file[:-3]}')
+                print(f"loaded {file}")
+
+
+bot = Bot(command_prefix='!', intents=intents)
 
 
 @bot.event
 async def on_ready():
     print(f'Im ready!')
-
-
-@bot.command(name='ping')
-async def ping(ctx):
-    await ctx.send('Pong!')
-
-# im testing a pull request to see if it works
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
