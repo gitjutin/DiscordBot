@@ -1,6 +1,7 @@
 import random
 from discord.ext import commands
 import discord
+import os
 
 USER_IDS = [
     519679522392768523,  # Mary
@@ -32,6 +33,8 @@ class Fun(commands.Cog):
                         value="Shows this list of commands")
         embed.add_field(name="3️⃣ !plug", inline=False,
                         value="Shows my Github, Resume, and Linkedin links")
+        embed.add_field(name="4️⃣ !puff", inline=False,
+                        value="Shows a picture of Puff!")
         await ctx.send(embed=embed)
 
     @commands.command(name='plug')
@@ -49,6 +52,27 @@ class Fun(commands.Cog):
                         value="[Check out my Linkedin](https://www.linkedin.com/in/justin-do-a96397207/)")
         embed.set_footer(text="Thanks for checking me out!")
         await ctx.send(embed=embed)
+
+    @commands.command(name='puff')
+    async def puff(self, ctx):
+
+        images = [f for f in os.listdir("pics") if f.endswith(
+            (".png", ".jpg", ".jpeg", ".gif"))]
+        if not images:
+            await ctx.send("No images found.")
+            return
+
+        random_pic = random.choice(images)
+        ext = os.path.splitext(random_pic)[1]
+        filename = f"pics{ext}"
+
+        file = discord.File(os.path.join(
+            "pics", random_pic), filename=filename)
+
+        embed = discord.Embed(
+            title="Puff Selfies", color=discord.Color.blue(), description="Hey it's me Puff!")
+        embed.set_image(url=f"attachment://{filename}")
+        await ctx.send(embed=embed, file=file)
 
 
 async def setup(bot):
