@@ -23,7 +23,7 @@ class Bot(commands.Bot):
                 print(f"loaded {file}")
 
 
-bot = Bot(command_prefix='!', intents=intents)
+bot = Bot(command_prefix='!', intents=intents, help_command=None)
 
 
 @bot.event
