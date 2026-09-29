@@ -15,29 +15,30 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='owen')
+    @commands.command(name='owen', help="You know what it does")
     async def owen(self, ctx):
         user_id = random.choice(USER_IDS)
         await ctx.send(f'Hey <@{user_id}>, do you know owen? :P')
 
-    @commands.command(name='commands')
+    @commands.command(name="commands", help="Shows this list of commands")
     async def commands_list(self, ctx):
         embed = discord.Embed(
             title="Bot Commands",
             description="Available commands:",
             color=discord.Color.blue()
         )
-        embed.add_field(name="1️⃣ !owen", inline=False,
-                        value="You know what it does")
-        embed.add_field(name="2️⃣ !commands", inline=False,
-                        value="Shows this list of commands")
-        embed.add_field(name="3️⃣ !plug", inline=False,
-                        value="Shows my Github, Resume, and Linkedin links")
-        embed.add_field(name="4️⃣ !puff", inline=False,
-                        value="Shows a picture of Puff!")
+
+        visible = [c for c in self.bot.commands if not c.hidden]
+        for i, cmd in enumerate(sorted(visible, key=lambda c: c.name), start=1):
+            name = f"{i}. !{cmd.name}"
+            if cmd.aliases:
+                name += " (or " + ", ".join(f"!{a}" for a in cmd.aliases) + ")"
+            embed.add_field(
+                name=name, value=cmd.help or "No description", inline=False)
+
         await ctx.send(embed=embed)
 
-    @commands.command(name='plug')
+    @commands.command(name='plug', help="Shows my Github, Resume, and Linkedin links")
     async def plug(self, ctx):
         embed = discord.Embed(
             title="Plug",
@@ -53,7 +54,7 @@ class Fun(commands.Cog):
         embed.set_footer(text="Thanks for checking me out!")
         await ctx.send(embed=embed)
 
-    @commands.command(name='puff')
+    @commands.command(name='puff', help="Shows a picture of Puff!")
     async def puff(self, ctx):
 
         images = [f for f in os.listdir("pics") if f.endswith(

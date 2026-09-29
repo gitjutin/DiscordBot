@@ -1,4 +1,7 @@
 .env
 environment.txt
 discord.log
-
+trivia.db
+__pycache__/
+*.pyc
+.vscode/
